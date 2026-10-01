@@ -3,12 +3,14 @@ import { Activity, Plus, Search, User } from 'lucide-react';
 import { api } from './services/api';
 import type{ Patient } from './types/clinical';
 import { PatientModal } from './components/PatientModal';
-
+import { DailyRecordModal } from './components/DailyRecordModal';
 export default function App() {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [selectedPatientForRecord, setSelectedPatientForRecord] = useState<Patient | null>(null);
+  const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
 
   const fetchPatients = async () => {
     try {
@@ -108,7 +110,11 @@ export default function App() {
                 </div>
 
                 <div className="mt-5 border-t border-slate-100 pt-4 flex gap-2">
-                  <button className="flex-1 rounded-lg bg-slate-900 py-1.5 text-xs font-medium text-white hover:bg-slate-800 transition">
+                  <button onClick={() => {
+                    setSelectedPatientForRecord(patient);
+                    setIsRecordModalOpen(true);
+                  }} 
+                  className="flex-1 rounded-lg bg-slate-900 py-1.5 text-xs font-medium text-white hover:bg-slate-800 transition">
                     Cargar Turno
                   </button>
                   <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition">
@@ -125,6 +131,18 @@ export default function App() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onPatientCreated={fetchPatients}
+      />
+
+      <DailyRecordModal
+        isOpen={isRecordModalOpen}
+        patient={selectedPatientForRecord}
+        onClose={() => {
+          setIsRecordModalOpen(false);
+          setSelectedPatientForRecord(null);
+        }}
+        onRecordCreated={() => {
+          fetchPatients();
+        }}
       />
     </div>
   );
