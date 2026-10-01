@@ -1,4 +1,4 @@
-# Sistema de Monitoreo Clínico y Farmacológico - Hospital Tobar García
+# Sistema de Monitoreo Clínico y Farmacológico
 
 Plataforma digital para el registro clínico estructurado y seguimiento gastrointestinal de pacientes internados bajo esquemas psicofarmacológicos (antipsicóticos como Clozapina).
 
