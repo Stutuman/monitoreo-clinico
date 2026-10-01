@@ -4,6 +4,7 @@ import { api } from './services/api';
 import type{ Patient } from './types/clinical';
 import { PatientModal } from './components/PatientModal';
 import { DailyRecordModal } from './components/DailyRecordModal';
+import { PatientHistoryModal } from './components/PatientHistoryModal';
 export default function App() {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [search, setSearch] = useState('');
@@ -11,6 +12,8 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [selectedPatientForRecord, setSelectedPatientForRecord] = useState<Patient | null>(null);
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
+  const [selectedPatientForHistory, setSelectedPatientForHistory] = useState<Patient | null>(null);
+  const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
 
   const fetchPatients = async () => {
     try {
@@ -117,7 +120,12 @@ export default function App() {
                   className="flex-1 rounded-lg bg-slate-900 py-1.5 text-xs font-medium text-white hover:bg-slate-800 transition">
                     Cargar Turno
                   </button>
-                  <button className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition">
+                  <button
+                    onClick={()=> {
+                      setSelectedPatientForHistory(patient);
+                      setIsHistoryModalOpen(true);
+                    }}
+                   className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50 transition">
                     Ver Historial
                   </button>
                 </div>
@@ -132,6 +140,13 @@ export default function App() {
         onClose={() => setIsModalOpen(false)}
         onPatientCreated={fetchPatients}
       />
+      <PatientHistoryModal
+        isOpen={isHistoryModalOpen}
+        patient={selectedPatientForHistory}
+        onClose={()=> {
+          setIsHistoryModalOpen(false);
+          setSelectedPatientForHistory(null);
+        }}/>
 
       <DailyRecordModal
         isOpen={isRecordModalOpen}
@@ -145,5 +160,6 @@ export default function App() {
         }}
       />
     </div>
+    
   );
 }

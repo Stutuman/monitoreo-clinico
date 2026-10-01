@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, ClipboardCheck, AlertTriangle } from 'lucide-react';
 import { api } from '../services/api';
-import type { CreateDailyRecordInput, Farmaco, Patient, Turno } from '../types/clinical';
+import type { Farmaco, Patient, Turno } from '../types/clinical';
 
 interface DailyRecordModalProps {
   isOpen: boolean;
